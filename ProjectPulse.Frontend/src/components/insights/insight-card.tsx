@@ -1,0 +1,2 @@
+import { Card, CardContent } from "@/components/ui/card";
+export function InsightCard({ title, body }: { title:string; body:string }) { return <Card className="bg-gradient-to-br from-brand-primary/10 to-transparent"><CardContent className="space-y-2"><p className="text-sm font-semibold text-brand-primary">AI signal</p><h3 className="text-lg font-semibold">{title}</h3><p className="text-sm text-slate-600 dark:text-slate-300">{body}</p></CardContent></Card>; }

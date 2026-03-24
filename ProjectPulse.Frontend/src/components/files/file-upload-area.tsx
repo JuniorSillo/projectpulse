@@ -1,0 +1,2 @@
+import { UploadCloud } from "lucide-react"; import { Card, CardContent } from "@/components/ui/card";
+export function FileUploadArea(){ return <Card className="border-dashed"><CardContent className="flex flex-col items-center justify-center gap-3 py-12 text-center"><div className="rounded-2xl bg-brand-primary/10 p-4 text-brand-primary"><UploadCloud className="h-8 w-8" /></div><div><h3 className="font-semibold">Drop files here</h3><p className="text-sm text-slate-500">Mock upload zone for future backend integration.</p></div></CardContent></Card>; }
