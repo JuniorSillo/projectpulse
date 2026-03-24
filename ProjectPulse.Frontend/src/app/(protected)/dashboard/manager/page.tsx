@@ -6,23 +6,51 @@ import { LineChartCard, BarChartCard } from "@/components/shared/chart-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { StatCard } from "@/components/shared/stat-card";
 import { chartData, milestones } from "@/lib/mock-data";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PanelCard, MilestoneRow } from "@/components/shared/dashboard-primitives";
+import { FolderKanban, Flag, AlertCircle, Users } from "lucide-react";
 
 export default function Page() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
+      {/* ── Header ── */}
       <PageHeader
         title="Project Manager Dashboard"
         description="Coordinate timelines, milestones, and team delivery with confidence."
       />
 
+      {/* ── Stat row ── */}
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="My active projects" value="4" helper="Across 3 clients" />
-        <StatCard label="Milestones due" value="5" helper="This week" />
-        <StatCard label="Overdue tasks" value="8" helper="Need follow-up" />
-        <StatCard label="Team workload" value="87%" helper="Near capacity" />
+        <StatCard
+          label="My active projects"
+          value="4"
+          helper="Across 3 clients"
+          icon={<FolderKanban className="h-4 w-4" />}
+          accent="#484BF1"
+        />
+        <StatCard
+          label="Milestones due"
+          value="5"
+          helper="This week"
+          icon={<Flag className="h-4 w-4" />}
+          accent="#0F3FC2"
+        />
+        <StatCard
+          label="Overdue tasks"
+          value="8"
+          helper="Need follow-up"
+          icon={<AlertCircle className="h-4 w-4" />}
+          accent="#f43f5e"
+        />
+        <StatCard
+          label="Team workload"
+          value="87%"
+          helper="Near capacity"
+          icon={<Users className="h-4 w-4" />}
+          accent="#f59e0b"
+        />
       </div>
 
+      {/* ── Charts ── */}
       <div className="grid gap-6 xl:grid-cols-2">
         <LineChartCard title="Project progress trend" data={chartData.progressTrend} />
         <BarChartCard
@@ -34,27 +62,32 @@ export default function Page() {
         />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>Milestones</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+      {/* ── Bottom panels ── */}
+      <div className="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
+        <PanelCard
+          title="Milestones"
+          action={
+            <span className="rounded-lg border border-[#484BF1]/20 bg-[#484BF1]/08 px-2 py-0.5 text-[#484BF1] dark:bg-[#484BF1]/10">
+              {milestones.length} total
+            </span>
+          }
+        >
+          <div className="space-y-3">
             {milestones.map((m) => (
-              <div key={m.id} className="rounded-2xl border p-4 dark:border-slate-800">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-medium">{m.title}</h3>
-                  <span className="text-sm text-slate-500">{m.dueDate}</span>
-                </div>
-                <p className="mt-2 text-sm text-slate-500">
-                  Current progress: {m.progress}%
-                </p>
-              </div>
+              <MilestoneRow
+                key={m.id}
+                title={m.title}
+                dueDate={m.dueDate}
+                progress={m.progress}
+                invert={false}
+              />
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </PanelCard>
 
-        <ActivityFeed />
+        <PanelCard title="Activity feed">
+          <ActivityFeed />
+        </PanelCard>
       </div>
     </div>
   );

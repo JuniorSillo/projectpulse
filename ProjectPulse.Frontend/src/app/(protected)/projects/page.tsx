@@ -1,19 +1,63 @@
-import { PageHeader } from "@/components/shared/page-header"; 
-import { Button } from "@/components/ui/button"; 
-import { ProjectTable } from "@/components/projects/project-table"; 
-import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/shared/page-header";
+import { Button } from "@/components/ui/button";
+import { ProjectTable } from "@/components/projects/project-table";
+import { Search, SlidersHorizontal } from "lucide-react";
 
+const filterFields = [
+  { placeholder: "Status", width: "w-36" },
+  { placeholder: "Manager", width: "w-36" },
+  { placeholder: "Client", width: "w-36" },
+  { placeholder: "Risk / date", width: "w-36" },
+];
 
-export default function ProjectsPage()
-{ return <div className="space-y-6">
-    <PageHeader title="Projects" description="Track project health, owners, risk, and delivery momentum." action={<Button>Create Project</Button>} />
-    <div className="grid gap-3 rounded-2xl border p-4 md:grid-cols-5 dark:border-slate-800">
-        <Input placeholder="Search projects..." />
-        <Input placeholder="Status" />
-        <Input placeholder="Manager" />
-        <Input placeholder="Client" />
-        <Input placeholder="Risk / date range" />
+export default function ProjectsPage() {
+  return (
+    <div className="space-y-7">
+      <PageHeader
+        title="Projects"
+        description="Track project health, owners, risk, and delivery momentum."
+        action={
+          <Button
+            className="h-9 rounded-xl px-4 text-sm font-semibold text-white"
+            style={{ background: "linear-gradient(135deg,#484BF1,#0F3FC2)", boxShadow: "0 4px 16px rgba(72,75,241,.3)" }}
+          >
+            + Create Project
+          </Button>
+        }
+      />
+
+      {/* ── Filter bar ── */}
+      <div className="flex flex-wrap items-center gap-3 rounded-[1.25rem] border border-slate-200/80 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.04)] dark:border-white/[0.06] dark:bg-[#161B27]">
+        {/* search */}
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+          <input
+            placeholder="Search projects…"
+            className="h-9 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#484BF1]/40 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#484BF1]/15 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-200 dark:placeholder:text-slate-500"
+          />
+        </div>
+
+        {/* filter chips */}
+        <div className="flex flex-wrap items-center gap-2">
+          {filterFields.map((f) => (
+            <select
+              key={f.placeholder}
+              className="h-9 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-500 focus:border-[#484BF1]/40 focus:outline-none focus:ring-2 focus:ring-[#484BF1]/15 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-400"
+            >
+              <option value="">{f.placeholder}</option>
+            </select>
+          ))}
+          <button className="flex h-9 items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-500 transition hover:border-slate-300 hover:text-slate-800 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-400 dark:hover:text-white">
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            Filters
+          </button>
+        </div>
+      </div>
+
+      {/* ── Table ── */}
+      <div className="rounded-[1.25rem] border border-slate-200/80 bg-white shadow-[0_2px_16px_rgba(0,0,0,0.05)] overflow-hidden dark:border-white/[0.06] dark:bg-[#161B27]">
+        <ProjectTable />
+      </div>
     </div>
-    <ProjectTable />
-</div>; 
+  );
 }

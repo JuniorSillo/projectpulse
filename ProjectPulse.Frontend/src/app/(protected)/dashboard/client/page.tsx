@@ -6,23 +6,51 @@ import { LineChartCard, BarChartCard } from "@/components/shared/chart-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { StatCard } from "@/components/shared/stat-card";
 import { chartData, milestones, projects } from "@/lib/mock-data";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PanelCard, ProjectRow } from "@/components/shared/dashboard-primitives";
+import { Layers, Milestone, TrendingUp, MessageSquare } from "lucide-react";
 
 export default function Page() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
+      {/* ── Header ── */}
       <PageHeader
         title="Client Dashboard"
         description="A clean view of delivery progress, milestones, and shared updates."
       />
 
+      {/* ── Stat row ── */}
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Active projects" value="2" helper="Currently in delivery" />
-        <StatCard label="Current milestone" value="UAT" helper="Near sign-off" />
-        <StatCard label="Completion" value="81%" helper="Average across projects" />
-        <StatCard label="Feedback items" value="3" helper="Pending review" />
+        <StatCard
+          label="Active projects"
+          value="2"
+          helper="Currently in delivery"
+          icon={<Layers className="h-4 w-4" />}
+          accent="#484BF1"
+        />
+        <StatCard
+          label="Current milestone"
+          value="UAT"
+          helper="Near sign-off"
+          icon={<Milestone className="h-4 w-4" />}
+          accent="#0F3FC2"
+        />
+        <StatCard
+          label="Completion"
+          value="81%"
+          helper="Average across projects"
+          icon={<TrendingUp className="h-4 w-4" />}
+          accent="#10b981"
+        />
+        <StatCard
+          label="Feedback items"
+          value="3"
+          helper="Pending review"
+          icon={<MessageSquare className="h-4 w-4" />}
+          accent="#f59e0b"
+        />
       </div>
 
+      {/* ── Charts ── */}
       <div className="grid gap-6 xl:grid-cols-2">
         <LineChartCard title="Project progress overview" data={chartData.progressTrend} />
         <BarChartCard
@@ -34,22 +62,27 @@ export default function Page() {
         />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>Projects</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+      {/* ── Bottom panels ── */}
+      <div className="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
+        <PanelCard
+          title="Your projects"
+          action={<span className="text-slate-400">{projects.length} total</span>}
+        >
+          <div className="space-y-3">
             {projects.map((project) => (
-              <div key={project.id} className="rounded-2xl border p-4 dark:border-slate-800">
-                <h3 className="font-medium">{project.name}</h3>
-                <p className="mt-2 text-sm text-slate-500">{project.description}</p>
-              </div>
+              <ProjectRow
+                key={project.id}
+                name={project.name}
+                description={project.description}
+                progress={project.progress}
+              />
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </PanelCard>
 
-        <ActivityFeed />
+        <PanelCard title="Activity feed">
+          <ActivityFeed />
+        </PanelCard>
       </div>
     </div>
   );

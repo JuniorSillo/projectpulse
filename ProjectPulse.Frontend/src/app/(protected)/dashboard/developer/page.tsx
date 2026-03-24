@@ -6,55 +6,89 @@ import { LineChartCard, BarChartCard } from "@/components/shared/chart-card";
 import { PageHeader } from "@/components/shared/page-header";
 import { StatCard } from "@/components/shared/stat-card";
 import { chartData, tasks } from "@/lib/mock-data";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PanelCard, TaskRow } from "@/components/shared/dashboard-primitives";
+import { CheckSquare, Clock, CheckCircle2, Ban } from "lucide-react";
 
 export default function Page() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
+      {/* ── Header ── */}
       <PageHeader
         title="Developer Dashboard"
         description="Stay focused on priorities, blockers, and deadlines."
       />
 
+      {/* ── Stat row ── */}
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Assigned tasks" value="12" helper="Across active projects" />
-        <StatCard label="Due soon" value="4" helper="Next 3 days" />
-        <StatCard label="Completed this week" value="7" helper="Strong momentum" />
-        <StatCard label="Blocked tasks" value="1" helper="Needs support" />
+        <StatCard
+          label="Assigned tasks"
+          value="12"
+          helper="Across active projects"
+          icon={<CheckSquare className="h-4 w-4" />}
+          accent="#484BF1"
+        />
+        <StatCard
+          label="Due soon"
+          value="4"
+          helper="Next 3 days"
+          icon={<Clock className="h-4 w-4" />}
+          accent="#f59e0b"
+        />
+        <StatCard
+          label="Completed this week"
+          value="7"
+          helper="Strong momentum"
+          icon={<CheckCircle2 className="h-4 w-4" />}
+          accent="#10b981"
+        />
+        <StatCard
+          label="Blocked tasks"
+          value="1"
+          helper="Needs support"
+          icon={<Ban className="h-4 w-4" />}
+          accent="#f43f5e"
+        />
       </div>
 
+      {/* ── Charts ── */}
       <div className="grid gap-6 xl:grid-cols-2">
         <LineChartCard title="Task progress trend" data={chartData.progressTrend} />
         <BarChartCard
           title="Priority distribution"
           data={[
-            { name: "Low", value: 1 },
-            { name: "Med", value: 3 },
+            { name: "Low",  value: 1 },
+            { name: "Med",  value: 3 },
             { name: "High", value: 5 },
             { name: "Crit", value: 3 },
           ]}
         />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>Priority tasks</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {tasks.slice(0, 3).map((task) => (
-              <div key={task.id} className="rounded-2xl border p-4 dark:border-slate-800">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-medium">{task.title}</h3>
-                  <span className="text-sm text-slate-500">{task.priority}</span>
-                </div>
-                <p className="mt-2 text-sm text-slate-500">{task.description}</p>
-              </div>
+      {/* ── Bottom panels ── */}
+      <div className="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
+        <PanelCard
+          title="Priority tasks"
+          action={
+            <span className="rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 text-amber-600 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400">
+              4 due soon
+            </span>
+          }
+        >
+          <div className="space-y-3">
+            {tasks.slice(0, 4).map((task) => (
+              <TaskRow
+                key={task.id}
+                title={task.title}
+                description={task.description}
+                priority={task.priority}
+              />
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </PanelCard>
 
-        <ActivityFeed />
+        <PanelCard title="Activity feed">
+          <ActivityFeed />
+        </PanelCard>
       </div>
     </div>
   );
